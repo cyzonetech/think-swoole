@@ -1,5 +1,5 @@
 {
-  "name": "topthink/think-swoole",
+  "name": "cyzonetech/think-swoole",
   "description": "Swoole extend for thinkphp5.1",
   "license": "Apache-2.0",
   "type": "think-extend",
@@ -11,11 +11,11 @@
   ],
   "require": {
     "ext-swoole": ">=1.9.5",
-    "topthink/think-installer": "^2.0",
-    "topthink/framework": "~5.1.20",
+    "cyzonetech/think-installer": "^2.0",
+    "cyzonetech/framework": "~5.1.20",
     "jeremeamia/superclosure": "^2.4",
     "xavier/xcron-expression": "^0.11",
-    "topthink/think-queue": "^2.0"
+    "cyzonetech/think-queue": "^2.0"
   },
   "autoload": {
     "psr-4": {
