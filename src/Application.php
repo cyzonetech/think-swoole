@@ -14,6 +14,7 @@ namespace think\swoole;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use think\App;
+use think\Db;
 use think\Error;
 use think\exception\HttpException;
 use think\facade\Config;
@@ -39,6 +40,12 @@ class Application extends App
             $this->beginTime = microtime(true);
             $this->beginMem  = memory_get_usage();
 
+            // 重置数据库查询次数
+            Db::$queryTimes = 0;
+
+            // 重置数据库执行次数
+            Db::$executeTimes = 0;
+
             // 销毁当前请求对象实例
             $this->delete('think\Request');
 
@@ -54,6 +61,14 @@ class Application extends App
 
             if (isset($header['x-requested-with'])) {
                 $server['HTTP_X_REQUESTED_WITH'] = $header['x-requested-with'];
+            }
+
+            if (isset($header['referer'])) {
+                $server['http_referer'] = $header['referer'];
+            }
+
+            if (isset($_GET[$this->config->get('var_pathinfo')])) {
+                $server['path_info'] = $_GET[$this->config->get('var_pathinfo')];
             }
 
             $_SERVER = array_change_key_case($server, CASE_UPPER);
@@ -127,14 +142,17 @@ class Application extends App
             WebSocketFrame::destroy();
             $request = $frame->data;
             $request = json_decode($request, true);
+
             // 重置应用的开始时间和内存占用
             $this->beginTime = microtime(true);
             $this->beginMem  = memory_get_usage();
             WebSocketFrame::getInstance($server, $frame);
-            $_COOKIE                    = isset($request['arguments']['cookie']) ? $request['arguments']['cookie'] : [];
-            $_GET                       = isset($request['arguments']['get']) ? $request['arguments']['get'] : [];
-            $_POST                      = isset($request['arguments']['post']) ? $request['arguments']['post'] : [];
-            $_FILES                     = isset($request['arguments']['files']) ? $request['arguments']['files'] : [];
+
+            $_COOKIE = isset($request['arguments']['cookie']) ? $request['arguments']['cookie'] : [];
+            $_GET    = isset($request['arguments']['get']) ? $request['arguments']['get'] : [];
+            $_POST   = isset($request['arguments']['post']) ? $request['arguments']['post'] : [];
+            $_FILES  = isset($request['arguments']['files']) ? $request['arguments']['files'] : [];
+
             $_SERVER["PATH_INFO"]       = $request['url'] ?: '/';
             $_SERVER["REQUEST_URI"]     = $request['url'] ?: '/';
             $_SERVER["SERVER_PROTOCOL"] = 'http';
