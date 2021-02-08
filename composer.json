@@ -1,5 +1,5 @@
 {
-    "name": "topthink/think-swoole",
+    "name": "cyzonetech/think-swoole",
     "description": "Swoole extend for thinkphp",
     "license": "Apache-2.0",
     "authors": [
@@ -16,11 +16,11 @@
         "open-smf/connection-pool": "~1.0",
         "swoole/ide-helper": "^4.3",
         "symfony/finder": "^4.3.2|^5.1",
-        "topthink/framework": "^6.0"
+        "cyzonetech/framework": "^6.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.3|^5.1",
-        "topthink/think-tracing": "^1.0"
+        "cyzonetech/think-tracing": "^1.0"
     },
     "autoload": {
         "psr-4": {
